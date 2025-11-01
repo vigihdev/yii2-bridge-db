@@ -24,7 +24,6 @@ final class MysqlConnection implements Stringable, MysqlConnectionContract
         public readonly string $port = '3306',
         public readonly array $options = [
             'charset' => 'utf8mb4',
-            'timeout' => 30
         ],
     ) {}
 
