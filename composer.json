@@ -1,0 +1,53 @@
+{
+    "name": "vigihdev/yii2-bridge-db",
+    "version": "1.0.1",
+    "description": "Vigih Dev Database bridge component for Yii2 framework that implements service container pattern for dependency injection and modular database management.",
+    "type": "library",
+    "license": "MIT",
+    "keywords": [
+        "yii2",
+        "db",
+        "bridge",
+        "database",
+        "connection",
+        "service-container"
+    ],
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "authors": [
+        {
+            "name": "Vigih Dev",
+            "email": "vigihdev@gmail.com",
+            "role": "developer"
+        }
+    ],
+    "require": {
+        "php": "^8.1",
+        "yiisoft/db-mysql": "dev-master",
+        "yiisoft/cache": "^3.1"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^10.0",
+        "vigihdev/symfony-bridge-config": "dev-main"
+    },
+    "autoload": {
+        "psr-4": {
+            "VigihDev\\Yii2BridgeDb\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "VigihDev\\Yii2BridgeDb\\Tests\\": [
+                "tests/",
+                "tests/src/"
+            ]
+        }
+    },
+    "config": {
+        "process-timeout": 0
+    },
+    "scripts": {
+        "test": "phpunit",
+        "server": "php -S localhost:2263 server.php"
+    }
+}
