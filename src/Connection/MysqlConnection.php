@@ -15,6 +15,8 @@ use Yiisoft\Db\Mysql\Driver;
 final class MysqlConnection implements Stringable, MysqlConnectionContract
 {
 
+    private ?Connection $connection = null;
+
     public function __construct(
         public readonly string $dbname = '',
         public readonly string $username = '',
@@ -32,21 +34,21 @@ final class MysqlConnection implements Stringable, MysqlConnectionContract
     {
 
         try {
+            if ($this->connection === null) {
+                $dsn = $this->__toString();
+                $driver = new Driver(
+                    dsn: $dsn,
+                    username: $this->username,
+                    password: $this->password,
+                    attributes: $this->options
+                );
 
-            $dsn = $this->__toString();
-            $driver = new Driver(
-                dsn: $dsn,
-                username: $this->username,
-                password: $this->password,
-                attributes: $this->options
-            );
-
-            $connection = new Connection(
-                driver: $driver,
-                schemaCache: new SchemaCache(new ArrayCache())
-            );
-
-            return $connection;
+                $this->connection = new Connection(
+                    driver: $driver,
+                    schemaCache: new SchemaCache(new ArrayCache())
+                );
+            }
+            return $this->connection;
         } catch (\RuntimeException $e) {
             throw new RuntimeException("Gagal Connection ke {$this->dbname}");
         }

@@ -17,6 +17,8 @@ use Yiisoft\Db\Mysql\Driver;
 final class MysqlEncryptorConnection implements Stringable, MysqlConnectionContract
 {
 
+    private ?Connection $connection = null;
+
     public function __construct(
         public readonly string $dbname = '',
         public readonly string $username = '',
@@ -39,20 +41,22 @@ final class MysqlEncryptorConnection implements Stringable, MysqlConnectionContr
 
         try {
 
-            $dsn = $this->__toDsnDecrypt();
-            $driver = new Driver(
-                dsn: $dsn,
-                username: $this->decrypt($this->username),
-                password: $this->decrypt($this->password),
-                attributes: $this->options
-            );
+            if ($this->connection === null) {
+                $dsn = $this->__toDsnDecrypt();
+                $driver = new Driver(
+                    dsn: $dsn,
+                    username: $this->decrypt($this->username),
+                    password: $this->decrypt($this->password),
+                    attributes: $this->options
+                );
 
-            $connection = new Connection(
-                driver: $driver,
-                schemaCache: new SchemaCache(new ArrayCache())
-            );
+                $this->connection = new Connection(
+                    driver: $driver,
+                    schemaCache: new SchemaCache(new ArrayCache())
+                );
+            }
 
-            return $connection;
+            return $this->connection;
         } catch (\RuntimeException $e) {
             throw new RuntimeException("Gagal Connection ke {$this->dbname}");
         }

@@ -14,7 +14,11 @@ class MultipleConnectionTest extends TestCase
 
     protected function setUp(): void
     {
-        ConfigBridge::boot(dirname(__DIR__));
+        ConfigBridge::boot(
+            basePath: dirname(__DIR__),
+            configDir: 'config',
+            enableAutoInjection: true,
+        );
         $this->connectionService = ServiceLocator::get(ConnectionServiceContract::class);
     }
 
